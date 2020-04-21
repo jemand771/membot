@@ -26,6 +26,8 @@ jobs:
     - name: build container
       run: docker build -t membot-discord .
 
-    - name: push image
+    - name: docker login
       uses: actions/docker/login@master
+
+    - name: push image
       run: docker push membot-discord
