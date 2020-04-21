@@ -1,14 +1,15 @@
 FROM python:3
 
-RUN mkdir /app
-COPY *.py /app/
-COPY funia_generators.json /app/
-COPY haarcascade_frontalface_default.xml /app/
-COPY cmd /app/
-COPY cv_modules /app/
+RUN mkdir /app/
+WORKDIR /app/
+
+ADD *.py /app/
+ADD funia_generators.json /app/
+ADD haarcascade_frontalface_default.xml /app/
+ADD cmd/* /app/cmd/
+ADD cv_modules/* /app/cv_modules/
 
 COPY requirements.txt /
 RUN pip install -r requirements.txt
 
-WORKDIR /app
-CMD ["python", "bot.py"]
+CMD ["python", "app/bot.py"]
