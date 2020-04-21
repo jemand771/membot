@@ -1,4 +1,5 @@
 aiohttp
-python-magic
-numpy
+cv2
 discord.py[voice]
+numpy
+python-magic
