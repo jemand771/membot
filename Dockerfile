@@ -1,6 +1,7 @@
 FROM python:3
 
 ARG GITHUB_WORKSPACE
+RUN ls $GITHUB_WORKSPACE
 
 COPY *.py /app/
 COPY funia_generators.json /app/
