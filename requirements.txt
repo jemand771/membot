@@ -1,0 +1,4 @@
+aiohttp
+python-magic
+numpy
+discord.py[voice]
