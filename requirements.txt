@@ -1,5 +1,5 @@
 aiohttp
-cv2
+opencv
 discord.py[voice]
 numpy
 python-magic
