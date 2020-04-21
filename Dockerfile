@@ -1,6 +1,6 @@
 FROM python:3
 
-COPY *.py /app
+COPY *.py /app/
 COPY funia_generators.json /app/
 COPY haarcascade_frontalface_default.xml /app/
 COPY cmd /app/
