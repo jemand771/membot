@@ -36,7 +36,7 @@ class Util:
 
     def load_sme_index(self):
         self.known_smes = []
-        file = open("sme.json")
+        file = open("config/sme.json")
         cand = json.load(file)
         file.close()
         for x in cand:
