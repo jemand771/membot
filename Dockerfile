@@ -12,5 +12,6 @@ COPY requirements.txt /
 RUN pip install -r /requirements.txt
 
 RUN mkdir /data/
+RUN mkdir /config/
 
 CMD ["python", "bot.py"]

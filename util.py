@@ -85,7 +85,7 @@ class Util:
         await self.client.close()
 
     def run(self):
-        with open("config.json") as f:
+        with open("config/config.json") as f:
             config = json.load(f)
             self.BOT_TOKEN = config["bot_token"]
             self.PREFIXES = config["prefixes"]

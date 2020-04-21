@@ -4,8 +4,8 @@ __pycache__/
 # jetbrains project folder
 .idea
 
-# bot config file
-config.json
+# bot config files
+config/
 
 # bot data folders -- use other upload methods for images
 data/
