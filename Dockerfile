@@ -1,5 +1,6 @@
 FROM python:3
 
+RUN mkdir /app
 COPY *.py /app/
 COPY funia_generators.json /app/
 COPY haarcascade_frontalface_default.xml /app/
