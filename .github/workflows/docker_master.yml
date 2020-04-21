@@ -27,4 +27,5 @@ jobs:
       run: docker build -t membot-discord .
 
     - name: push image
+      uses: actions/docker/login@master
       run: docker push membot-discord
