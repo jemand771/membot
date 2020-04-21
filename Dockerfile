@@ -1,5 +1,8 @@
 FROM python:3
 
+RUN pwd
+RUN ls
+
 COPY *.py /app/
 COPY funia_generators.json /app/
 COPY haarcascade_frontalface_default.xml /app/
