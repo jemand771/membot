@@ -1,0 +1,12 @@
+# python cache
+__pycache__/
+
+# jetbrains project folder
+.idea
+
+# bot config file
+config.json
+
+# bot data folders -- use other upload methods for images
+data/
+sme/

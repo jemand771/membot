@@ -1,0 +1,157 @@
+[
+  {
+    "name": "soup_letters",
+    "alias": [
+      "soup"
+    ],
+    "num_texts": 1,
+    "max_lens": [
+      14
+    ]
+  },
+  {
+    "name": "arrow-signs",
+    "alias": [
+      "arrows"
+    ],
+    "num_texts": 2,
+    "max_lens": [
+      20,
+      20
+    ]
+  },
+  {
+    "name": "tree_carving",
+    "alias": [
+      "tree"
+    ],
+    "num_texts": 2,
+    "max_lens": [
+      15,
+      12
+    ],
+    "text1": "text"
+  },
+  {
+    "name": "led-road-sign",
+    "alias": [
+      "roadsign"
+    ],
+    "num_texts": 2,
+    "max_lens": [
+      69,
+      3
+    ],
+    "text1": "text",
+    "text2": "sign"
+  },
+  {
+    "name": "lipstick-writing",
+    "alias": [
+      "lipstick"
+    ],
+    "num_texts": 1,
+    "max_lens": [
+      15
+    ]
+  },
+  {
+    "name": "beach-sign",
+    "alias": [
+      "beachsign"
+    ],
+    "num_texts": 1,
+    "max_lens": [
+      30
+    ]
+  },
+  {
+    "name": "yacht",
+    "alias": [
+      "yacht"
+    ],
+    "num_texts": 1,
+    "max_lens": [
+      25
+    ]
+  },
+  {
+    "name": "at-the-gallery",
+    "alias": [
+      "gallery"
+    ],
+    "num_images": 1
+  },
+  {
+    "name": "art-admirer",
+    "alias": [
+      "admire"
+    ],
+    "num_images": 1
+  },
+  {
+    "name": "truck-advert",
+    "alias": [
+      "truck"
+    ],
+    "num_images": 1
+  },
+  {
+    "name": "dollar",
+    "alias": [
+      "dollar"
+    ],
+    "num_images": 1
+  },
+  {
+    "name": "playful-cat",
+    "alias": [
+      "cat"
+    ],
+    "num_images": 1
+  },
+  {
+    "name": "golden-coin",
+    "alias": [
+      "coin"
+    ],
+    "num_texts": 2,
+    "max_lens": [
+      30,
+      4
+    ],
+    "text1": "text",
+    "num_images": 1
+  },
+  {
+    "name": "morning-newspaper",
+    "alias": [
+      "newspaper"
+    ],
+    "num_texts": 1,
+    "max_lens": [
+      30
+    ],
+    "num_images": 1
+  },
+  {
+    "name": "business-newspaper",
+    "alias": [
+      "newspaper2"
+    ],
+    "num_texts": 2,
+    "max_lens": [
+      20,
+      30
+    ],
+    "text1": "text",
+    "num_images": 1
+  },
+  {
+    "name": "polaroid_dress",
+    "alias": [
+      "dress"
+    ],
+    "num_images": 1
+  }
+]
