@@ -24,8 +24,9 @@ class CVModule(GenericCVModule):
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # Detect faces
         faces = face_cascade.detectMultiScale(gray, 1.1, 4)
-        if len(faces) != 1:
-            return
+        # just do nothing if no face was found
+        if len(faces) == 0:
+            return img
         x1, y1, cw, ch = faces[0]
         x2 = x1 + cw
         y2 = y1 + ch
