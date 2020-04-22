@@ -7,7 +7,7 @@ class CVModule(GenericCVModule):
 
     async def perform(self, img, *args, **kwargs):
 
-        face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+        face_cascade = cv2.CascadeClassifier("static/haarcascade_frontalface_default.xml")
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # Detect faces
         faces = face_cascade.detectMultiScale(gray, 1.1, 4)

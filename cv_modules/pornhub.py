@@ -22,7 +22,7 @@ class CVModule(GenericCVModule):
             return None
 
         # create some font objects
-        fontpath = "./arialbd.ttf"
+        fontpath = "static/arialbd.ttf"
         font = ImageFont.truetype(fontpath, 256)
         img_pil = Image.fromarray(np.zeros((200, 400, 3), np.uint8))
         draw = ImageDraw.Draw(img_pil)

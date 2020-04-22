@@ -4,7 +4,7 @@ WORKDIR /
 
 ADD *.py /
 ADD funia_generators.json /
-ADD haarcascade_frontalface_default.xml /
+ADD static/* /static/
 ADD cmd/* /cmd/
 ADD cv_modules/* /cv_modules/
 
