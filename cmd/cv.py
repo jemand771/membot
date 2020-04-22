@@ -54,9 +54,10 @@ class Command(GenericCommand):
             await message.channel.send(msg)
             return
 
+        # todo make this pretty
         if args == ["funia", "list"]:
             with open("funia_generators.json") as f:
-                await message.channel.send("```json\n" + json.dumps(json.load(f), indent=2) + "\n```")
+                await message.channel.send("```\n" + "\n".join([", ".join(x["alias"]) for x in json.load(f)]) + "\n```")
             return
 
         # insert more special commands above. modules are processed last
