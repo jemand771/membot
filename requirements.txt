@@ -3,3 +3,4 @@ opencv-python
 discord.py[voice]
 numpy
 python-magic
+pillow
