@@ -7,6 +7,9 @@ __pycache__/
 # bot config files
 config/
 
+# local debug folder for testing stuff
+debug/
+
 # bot data folders -- use other upload methods for images
 data/
 sme/
