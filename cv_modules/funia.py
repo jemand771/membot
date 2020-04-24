@@ -42,6 +42,12 @@ class CVModule(GenericCVModule):
                     ptext = nargs[-1][:len(pnames)] if len(nargs) > num_texts else ""
                     for i, x in enumerate(pnames):
                         params[x] = ptext[i] if i < len(ptext) else "1"
+                        aliaskey = "p" + str(i) + "-" + str(params[x])
+                        if aliaskey in gen.keys():
+                            params[x] = gen[aliaskey]
+                        if params[x] == "DONT_SEND":
+                            del params[x]
+
                 if "num_images" in gen.keys():
                     num_images = gen["num_images"]
                 break
