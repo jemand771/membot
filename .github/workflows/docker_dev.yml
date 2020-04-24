@@ -35,5 +35,5 @@ jobs:
     - name: deploy image
       uses: satak/webrequest-action@master
       with:
-        url: https://jemand771.net/hook/?${{secrets.DEPLOY_HOOK_DEV}}
+        url: http://jemand771.net/hook/?${{secrets.DEPLOY_HOOK_DEV}}
         method: GET
