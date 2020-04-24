@@ -31,3 +31,9 @@ jobs:
 
     - name: push image
       run: docker push ${{secrets.DOCKER_USERNAME}}/membot-discord:dev
+
+    - name: deploy image
+      uses: satak/webrequest-action@master
+      with:
+        url: https://jemand771.net/hook/?${{secrets.DEPLOY_HOOK_DEV}}
+        method: GET
