@@ -25,14 +25,23 @@ class CVModule(GenericCVModule):
         num_images = 0
         num_texts = 0
         texts = []
+        params = {}
         for gen in allowed_generators:
             if nickname in gen["alias"]:
                 generator = gen
+                nargs = " ".join(args[1:]).split(";")
                 if "num_texts" in gen.keys():
                     num_texts = gen["num_texts"]
                     maxlens = generator["max_lens"]
-                    texts = " ".join(args[1:]).split(";")[:num_texts]
+                    texts = nargs[:num_texts]
+                    while len(texts) < num_texts:
+                        texts.append("")
                     texts = [t[:maxlens[i]] for i, t in enumerate(texts)]
+                if "params" in gen.keys():
+                    pnames = gen["params"]
+                    ptext = nargs[-1][:len(pnames)] if len(nargs) > num_texts else ""
+                    for i, x in enumerate(pnames):
+                        params[x] = ptext[i] if i < len(ptext) else "1"
                 if "num_images" in gen.keys():
                     num_images = gen["num_images"]
                 break
@@ -41,10 +50,14 @@ class CVModule(GenericCVModule):
             raise FuniaGeneratorNotFoundError()
             pass
 
+        print(texts)
+        print(params)
+
         generator_name = generator["name"]
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:43.0) Gecko/20100101 Firefox/43.0'}
         payload = aiohttp.FormData()
 
+        # image parameters
         if num_images == 1:
             if not given_images:
                 return
@@ -60,8 +73,11 @@ class CVModule(GenericCVModule):
                     key = generator[key]
                 payload.add_field(key, txt)
 
-        # image parameters
+        # parameter parameters
+        for key in params.keys():
+            payload.add_field(key, params[key])
 
+        # fire it
         url = "https://photofunia.com//categories/all_effects/" + generator_name + "?server=3"
         try:
             async with aiohttp.ClientSession() as session:
