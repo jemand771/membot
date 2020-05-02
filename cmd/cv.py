@@ -79,9 +79,14 @@ class Command(GenericCommand):
                     print("  applying module " + args[0])
                     images = None if ch not in self.channel_images.keys() else self.channel_images[ch][::-1]
                     img = await mod.perform(img, *args[1:], images=images, message=message)
-                    iidd = self.util.generate_uuid()
+                    # save image id directly
+                    iidd = img
+                    # overwrite with image if cv2 image was returned
+                    if type(img) != str:
+                        iidd = self.util.generate_uuid()
                     ioutput = self.util.TEMP_FOLDER + iidd + ".png"
-                    cv2.imwrite(ioutput, img)
+                    if type(img) != str:
+                        cv2.imwrite(ioutput, img)
                     if ch in self.channel_images.keys():
                         self.channel_images[ch].append(ioutput)
                     else:

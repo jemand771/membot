@@ -107,5 +107,4 @@ class CVModule(GenericCVModule):
 
         idd = self.util.generate_uuid()
         await self.util.download_png(idd, url)
-        img = cv2.imread(self.util.TEMP_FOLDER + idd + ".png")
-        return img
+        return idd
