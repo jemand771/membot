@@ -22,6 +22,8 @@ class Command(GenericCommand):
         if not args:
             return
 
+        ch = message.channel.id
+
         if len(args) == 2 and args[0] == "save":
             idd = args[1]
             ch = message.channel.id
@@ -60,8 +62,36 @@ class Command(GenericCommand):
                 await message.channel.send("```\n" + "\n".join([", ".join(x["alias"]) for x in json.load(f)]) + "\n```")
             return
 
+        if 1 <= len(args) <= 2 and args[0] == "undo":
+            num = 1
+            if len(args) == 2:
+                try:
+                    num = int(args[1])
+                except TypeError:
+                    pass
+
+            av = len(self.channel_images[ch])
+            if av <= num:
+                num = av
+                del self.channel_images[ch]
+                await message.channel.send("image stack cleared. (" + str(num) + " elements removed)")
+            else:
+                self.channel_images[ch] = self.channel_images[ch][:-num]
+                await message.channel.send("popped " + str(num) + " elements from image stack")
+            return
+
+        if args == ["queue"]:
+            if ch not in self.channel_images.keys():
+                await message.channel.send("the image queue for channel`" + str(ch) + "` is empty")
+                return
+            await message.channel.send(
+                "image queue for channel `" + str(ch) + "`:\n```\n" + "\n".join(
+                    [x.split("/")[-1].split(".")[0] for x in self.channel_images[ch]]
+                ) + "\n```"
+            )
+            return
+
         # insert more special commands above. modules are processed last
-        ch = message.channel.id
 
         if args[0] in self.known_modules:
             mod = self.known_modules[args[0]]
