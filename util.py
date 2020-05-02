@@ -116,6 +116,7 @@ class Util:
             img = cv2.imread(output + ext)
             cv2.imwrite(output + ".png", img)
             os.remove(output + ext)
+        return output + ".png"
 
     @staticmethod
     def generate_uuid():

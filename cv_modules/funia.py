@@ -106,5 +106,4 @@ class CVModule(GenericCVModule):
             return
 
         idd = self.util.generate_uuid()
-        await self.util.download_png(idd, url)
-        return idd
+        return await self.util.download_png(idd, url)
