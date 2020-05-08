@@ -19,19 +19,28 @@ async def on_ready():
 
 
 @client.event
+async def on_guild_join(guild):
+    util.mkdirs()
+
+
+@client.event
 async def on_message(message):
     # ignore own messages
     if message.author == client.user:
         return
 
-    cmd = ""
+    cmd = None
     args = None
     for p in util.PREFIXES:
         if message.content.startswith(p):
             cmd = message.content[len(p):]
             break
 
-    if cmd != "":
+    # ignore prefixes in DM
+    if cmd is None and type(message.channel) == discord.DMChannel:
+        cmd = message.content
+
+    if cmd is not None:
         args = cmd.split(" ")[1:]
         cmd = cmd.split(" ")[0]
         if cmd in util.known_cmds:

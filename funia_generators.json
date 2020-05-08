@@ -166,6 +166,73 @@
       25
     ],
     "num_images": 1,
-    "params": ["bcg", "txt"]
+    "params": [
+      "bcg",
+      "txt"
+    ],
+    "p0-1": "5",
+    "p0-2": "1",
+    "p0-3": "2",
+    "p0-4": "3",
+    "p0-5": "4"
+  },
+  {
+    "name": "toasts",
+    "alias": [
+      "toast"
+    ],
+    "num_images": 1,
+    "params": [
+      "type"
+    ],
+    "p0-1": "heart",
+    "p0-2": "star",
+    "p0-3": "smile"
+  },
+  {
+    "name": "anime",
+    "alias": [
+      "anime"
+    ],
+    "num_images": 1,
+    "params": [
+      "eyes"
+    ],
+    "p0-1": "norm",
+    "p0-2": "blue",
+    "p0-3": "aqua",
+    "p0-4": "green",
+    "p0-5": "brown",
+    "p0-6": "red",
+    "p0-7": "purple"
+  },
+  {
+    "name": "clown",
+    "alias": [
+      "clown"
+    ],
+    "num_images": 1,
+    "params": [
+      "hat"
+    ],
+    "p0-1": "off",
+    "p0-2": "on"
+  },
+  {
+    "name": "good_luck_chuck",
+    "alias": [
+      "glc"
+    ],
+    "num_images": 1
+  },
+  {
+    "name": "love-lock",
+    "alias": [
+      "lock"
+    ],
+    "num_texts": 1,
+    "max_lens": [
+      70
+    ]
   }
 ]

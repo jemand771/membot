@@ -57,20 +57,32 @@ class Util:
                     self.known_cmds[a] = cmd
             self.known_cmds[cmd_name] = cmd
 
+    def mkdirs(self):
+        for x in (self.TEMP_FOLDER, self.LIBRARY_FOLDER, self.SAVED_FOLDER):
+            if not os.path.exists(x):
+                os.mkdir(x)
+        for x in self.client.guilds:
+            p = self.SAVED_FOLDER + str(x.id)
+            if not os.path.exists(p):
+                print("creating saved dir for guild " + str(x.id))
+                os.mkdir(p)
+
     def reload(self):
         self.load_sme_index()
         self.known_cmds = {}
         self.import_commands()
+        self.mkdirs()
 
     async def reload_coro(self, relay=False):
+        version_string = "version " + os.getenv("BOT_VERSION", "unknown (non-docker)")
         await self.client.change_presence(
             status=discord.Status.idle,
-            activity=discord.Game("starting..."))
+            activity=discord.Game("starting " + version_string))
         exc = None
         # noinspection PyBroadException
         try:
             self.reload()
-            game = discord.Game("with j7's sanity")
+            game = discord.Game(version_string)
         except Exception as ex:
             exc = ex
             print("an error occured staring up the bot. will continue anyway. stacktrace:")
@@ -116,6 +128,7 @@ class Util:
             img = cv2.imread(output + ext)
             cv2.imwrite(output + ".png", img)
             os.remove(output + ext)
+        return output + ".png"
 
     @staticmethod
     def generate_uuid():
@@ -128,3 +141,7 @@ class Util:
         if user.id == 346668804375445505:
             return 4
         return 0
+
+    @staticmethod
+    def get_folder_id_from_message(message):
+        return str(message.author.id if type(message.channel) == discord.DMChannel else message.guild.id)

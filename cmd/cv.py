@@ -8,7 +8,8 @@ import uuid
 import cv2
 import discord
 
-from class_templates import GenericCommand, FuniaGeneratorNotFoundError
+
+from class_templates import GenericCommand, FuniaGeneratorNotFoundError, LoadImageLocallyOrFromUrlError
 
 permission_level = 0
 
@@ -22,13 +23,15 @@ class Command(GenericCommand):
         if not args:
             return
 
+        ch = message.channel.id
+
         if len(args) == 2 and args[0] == "save":
             idd = args[1]
             ch = message.channel.id
             if ch not in self.channel_images.keys():
                 await message.channel.send("no image is currently loaded")
                 return
-            output = self.util.SAVED_FOLDER + idd + ".png"
+            output = self.util.SAVED_FOLDER + self.util.get_folder_id_from_message(message) + "/" + idd + ".png"
             if os.path.exists(output):
                 await message.channel.send("that image already exists. use `cv delete` to delete it first")
                 return
@@ -38,7 +41,7 @@ class Command(GenericCommand):
 
         if len(args) == 2 and args[0] == "delete":
             idd = args[1]
-            output = self.util.SAVED_FOLDER + idd + ".png"
+            output = self.util.SAVED_FOLDER + self.util.get_folder_id_from_message(message) + "/" + idd + ".png"
             if not os.path.exists(output):
                 await message.channel.send("that image does not exist")
                 return
@@ -60,8 +63,36 @@ class Command(GenericCommand):
                 await message.channel.send("```\n" + "\n".join([", ".join(x["alias"]) for x in json.load(f)]) + "\n```")
             return
 
+        if 1 <= len(args) <= 2 and args[0] == "undo":
+            num = 1
+            if len(args) == 2:
+                try:
+                    num = int(args[1])
+                except TypeError:
+                    pass
+
+            av = len(self.channel_images[ch])
+            if av <= num:
+                num = av
+                del self.channel_images[ch]
+                await message.channel.send("image stack cleared. (" + str(num) + " elements removed)")
+            else:
+                self.channel_images[ch] = self.channel_images[ch][:-num]
+                await message.channel.send("popped " + str(num) + " elements from image stack")
+            return
+
+        if args == ["queue"]:
+            if ch not in self.channel_images.keys():
+                await message.channel.send("the image queue for channel`" + str(ch) + "` is empty")
+                return
+            await message.channel.send(
+                "image queue for channel `" + str(ch) + "`:\n```\n" + "\n".join(
+                    [x.split("/")[-1].split(".")[0] for x in self.channel_images[ch]]
+                ) + "\n```"
+            )
+            return
+
         # insert more special commands above. modules are processed last
-        ch = message.channel.id
 
         if args[0] in self.known_modules:
             mod = self.known_modules[args[0]]
@@ -79,9 +110,21 @@ class Command(GenericCommand):
                     print("  applying module " + args[0])
                     images = None if ch not in self.channel_images.keys() else self.channel_images[ch][::-1]
                     img = await mod.perform(img, *args[1:], images=images, message=message)
-                    iidd = self.util.generate_uuid()
-                    ioutput = self.util.TEMP_FOLDER + iidd + ".png"
-                    cv2.imwrite(ioutput, img)
+                    if img is None:
+                        await message.channel.send(
+                            "an error occured executing the specified module (image is None)")
+                        return
+                    # save image id directly
+                    iidd = None
+                    ioutput = None
+                    # overwrite with image if cv2 image was returned
+                    if type(img) == str:
+                        iidd = img.split("/")[-1].split(".")[0]
+                        ioutput = img
+                    else:
+                        iidd = self.util.generate_uuid()
+                        ioutput = self.util.TEMP_FOLDER + iidd + ".png"
+                        cv2.imwrite(ioutput, img)
                     if ch in self.channel_images.keys():
                         self.channel_images[ch].append(ioutput)
                     else:
@@ -106,6 +149,9 @@ class Command(GenericCommand):
                 except Exception as ex:
                     if isinstance(ex, FuniaGeneratorNotFoundError):
                         await message.channel.send("generator not found in local configuration. has it been registered?")
+                        return
+                    elif isinstance(ex, LoadImageLocallyOrFromUrlError):
+                        await message.channel.send("could not load image. is it a valid local id or a valid image url?")
                         return
                     await message.channel.send("An error occured while executing the CV module.")
                     track = traceback.format_exc()

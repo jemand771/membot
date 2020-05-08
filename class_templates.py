@@ -23,5 +23,5 @@ class FuniaGeneratorNotFoundError(Exception):
     pass
 
 
-class ImageNotFoundLocallyError(Exception):
+class LoadImageLocallyOrFromUrlError(Exception):
     pass
