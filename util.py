@@ -143,4 +143,4 @@ class Util:
 
     @staticmethod
     def get_folder_id_from_message(message):
-        return str(message.guild.id if hasattr(message, "guild") else message.author.id)
+        return str(message.author.id if type(message.channel) == discord.DMChannel else message.guild.id)

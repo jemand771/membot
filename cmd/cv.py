@@ -9,7 +9,7 @@ import cv2
 import discord
 
 
-from class_templates import GenericCommand, FuniaGeneratorNotFoundError
+from class_templates import GenericCommand, FuniaGeneratorNotFoundError, LoadImageLocallyOrFromUrlError
 
 permission_level = 0
 
@@ -110,6 +110,10 @@ class Command(GenericCommand):
                     print("  applying module " + args[0])
                     images = None if ch not in self.channel_images.keys() else self.channel_images[ch][::-1]
                     img = await mod.perform(img, *args[1:], images=images, message=message)
+                    if img is None:
+                        await message.channel.send(
+                            "an error occured executing the specified module (image is None)")
+                        return
                     # save image id directly
                     iidd = None
                     ioutput = None
@@ -145,6 +149,9 @@ class Command(GenericCommand):
                 except Exception as ex:
                     if isinstance(ex, FuniaGeneratorNotFoundError):
                         await message.channel.send("generator not found in local configuration. has it been registered?")
+                        return
+                    elif isinstance(ex, LoadImageLocallyOrFromUrlError):
+                        await message.channel.send("could not load image. is it a valid local id or a valid image url?")
                         return
                     await message.channel.send("An error occured while executing the CV module.")
                     track = traceback.format_exc()
