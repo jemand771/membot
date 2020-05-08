@@ -74,7 +74,7 @@ class Util:
         self.mkdirs()
 
     async def reload_coro(self, relay=False):
-        version_string = os.getenv("BOT_VERSION", "unknown (non-docker)")
+        version_string = "version " + os.getenv("BOT_VERSION", "unknown (non-docker)")
         await self.client.change_presence(
             status=discord.Status.idle,
             activity=discord.Game("starting " + version_string))
