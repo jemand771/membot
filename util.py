@@ -57,10 +57,21 @@ class Util:
                     self.known_cmds[a] = cmd
             self.known_cmds[cmd_name] = cmd
 
+    def mkdirs(self):
+        for x in (self.TEMP_FOLDER, self.LIBRARY_FOLDER, self.SAVED_FOLDER):
+            if not os.path.exists(x):
+                os.mkdir(x)
+        for x in self.client.guilds:
+            p = self.SAVED_FOLDER + str(x.id)
+            if not os.path.exists(p):
+                print("creating saved dir for guild " + str(x.id))
+                os.mkdir(p)
+
     def reload(self):
         self.load_sme_index()
         self.known_cmds = {}
         self.import_commands()
+        self.mkdirs()
 
     async def reload_coro(self, relay=False):
         await self.client.change_presence(
@@ -129,3 +140,7 @@ class Util:
         if user.id == 346668804375445505:
             return 4
         return 0
+
+    @staticmethod
+    def get_folder_id_from_message(message):
+        return str(message.guild.id if hasattr(message, "guild") else message.author.id)

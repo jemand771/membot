@@ -19,6 +19,11 @@ async def on_ready():
 
 
 @client.event
+async def on_guild_join(guild):
+    util.mkdirs()
+
+
+@client.event
 async def on_message(message):
     # ignore own messages
     if message.author == client.user:

@@ -13,7 +13,9 @@ class CVModule(GenericCVModule):
 
         if len(args) == 1:
             name = args[0]
-            for folder in (self.util.TEMP_FOLDER, self.util.SAVED_FOLDER, self.util.LIBRARY_FOLDER):
+            for folder in (self.util.TEMP_FOLDER,
+                           self.util.SAVED_FOLDER + str(kwargs["message"].guild.id) + "/",
+                           self.util.LIBRARY_FOLDER):
                 file = folder + name + ".png"
                 if os.path.exists(file):
                     await kwargs["message"].channel.send(

@@ -8,6 +8,7 @@ import uuid
 import cv2
 import discord
 
+
 from class_templates import GenericCommand, FuniaGeneratorNotFoundError
 
 permission_level = 0
@@ -30,7 +31,7 @@ class Command(GenericCommand):
             if ch not in self.channel_images.keys():
                 await message.channel.send("no image is currently loaded")
                 return
-            output = self.util.SAVED_FOLDER + idd + ".png"
+            output = self.util.SAVED_FOLDER + self.util.get_folder_id_from_message(message) + "/" + idd + ".png"
             if os.path.exists(output):
                 await message.channel.send("that image already exists. use `cv delete` to delete it first")
                 return
@@ -40,7 +41,7 @@ class Command(GenericCommand):
 
         if len(args) == 2 and args[0] == "delete":
             idd = args[1]
-            output = self.util.SAVED_FOLDER + idd + ".png"
+            output = self.util.SAVED_FOLDER + self.util.get_folder_id_from_message(message) + "/" + idd + ".png"
             if not os.path.exists(output):
                 await message.channel.send("that image does not exist")
                 return
