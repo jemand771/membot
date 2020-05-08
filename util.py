@@ -74,14 +74,15 @@ class Util:
         self.mkdirs()
 
     async def reload_coro(self, relay=False):
+        version_string = os.getenv("BOT_VERSION", "unknown (non-docker)")
         await self.client.change_presence(
             status=discord.Status.idle,
-            activity=discord.Game("starting..."))
+            activity=discord.Game("starting " + version_string))
         exc = None
         # noinspection PyBroadException
         try:
             self.reload()
-            game = discord.Game("with j7's sanity")
+            game = discord.Game(version_string)
         except Exception as ex:
             exc = ex
             print("an error occured staring up the bot. will continue anyway. stacktrace:")

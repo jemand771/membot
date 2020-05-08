@@ -22,7 +22,10 @@ jobs:
 
     # Runs a set of commands using the runners shell
     - name: build container
-      run: docker build -t ${{secrets.DOCKER_USERNAME}}/membot-discord:dev .
+      run: |
+      git_hash=$(git rev-parse --short "$GITHUB_SHA")
+      git_branch=${GITHUB_REF##*/}
+      docker build -t ${{secrets.DOCKER_USERNAME}}/membot-discord:dev --build-arg bot_version=${git_branch}.${git_hash} .
 
     - name: docker login
       run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_TOKEN}}
