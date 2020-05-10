@@ -1,4 +1,5 @@
 import discord
+import re
 import traceback
 
 from util import Util
@@ -60,13 +61,32 @@ async def on_message(message):
                 track = traceback.format_exc()
                 await message.channel.send("```\n" + track + "\n```")
             return
-        else:
-            # unknown command
-            pass
-    else:
-        # not a % command
-        print(message.content)
+
+    # not a command, try to match autoreplier
+    for replier in util.autorepliers:
+        # filter by guild if filter exists
+        if "guilds" in replier.keys():
+            if type(message.channel) == discord.DMChannel:
+                continue
+            if message.guild.id not in replier["guilds"]:
+                continue
+
+        # filter by user if filter exists
+        if "users" in replier.keys():
+            if message.author.id not in replier["users"]:
+                continue
+
+        # match regex
+        if not re.match(replier["re"], message.content):
+            continue
+
+        # match found, send response and get outta here
+        await message.channel.send(
+            "".join(["> " + x + "\n" for x in message.content.split("\n")]) + replier["response"])
         return
+
+    # print(message.content)
+    return
 
 if __name__ == "__main__":
     util.run()

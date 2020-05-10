@@ -28,10 +28,12 @@ class Util:
     TEMP_FOLDER = "data/temp/"
     SAVED_FOLDER = "data/saved/"
     LIBRARY_FOLDER = "data/library/"
+    AUTOREPLY_FOLDER = "data/autorepliers/"
 
     def __init__(self, client):
         self.known_smes = []
         self.known_cmds = {}
+        self.autorepliers = []
         self.client = client
 
     def load_sme_index(self):
@@ -58,7 +60,7 @@ class Util:
             self.known_cmds[cmd_name] = cmd
 
     def mkdirs(self):
-        for x in (self.TEMP_FOLDER, self.LIBRARY_FOLDER, self.SAVED_FOLDER):
+        for x in (self.TEMP_FOLDER, self.LIBRARY_FOLDER, self.SAVED_FOLDER, self.AUTOREPLY_FOLDER):
             if not os.path.exists(x):
                 os.mkdir(x)
         for x in self.client.guilds:
@@ -67,11 +69,21 @@ class Util:
                 print("creating saved dir for guild " + str(x.id))
                 os.mkdir(p)
 
+    def load_autorepliers(self):
+        self.autorepliers = []
+        for filename in os.listdir(self.AUTOREPLY_FOLDER):
+            if filename.endswith(".json"):
+                with open(self.AUTOREPLY_FOLDER + filename) as f:
+                    js = json.load(f)
+                    self.autorepliers.append(js)
+
     def reload(self):
+        self.load_config()
         self.load_sme_index()
         self.known_cmds = {}
         self.import_commands()
         self.mkdirs()
+        self.load_autorepliers()
 
     async def reload_coro(self, relay=False):
         version_string = "version " + os.getenv("BOT_VERSION", "unknown (non-docker)")
@@ -96,7 +108,7 @@ class Util:
     async def shutdown(self):
         await self.client.close()
 
-    def run(self):
+    def load_config(self):
         with open("config/config.json") as f:
             config = json.load(f)
             self.BOT_TOKEN = config["bot_token"]
@@ -106,6 +118,10 @@ class Util:
             self.TEMP_FOLDER = config["folders"]["temp"]
             self.SAVED_FOLDER = config["folders"]["saved"]
             self.LIBRARY_FOLDER = config["folders"]["library"]
+            self.AUTOREPLY_FOLDER = config["folders"]["autoreply"]
+
+    def run(self):
+        self.load_config()
         self.client.run(self.BOT_TOKEN)
 
     async def download_png(self, idd, url):
