@@ -78,6 +78,7 @@ class Util:
                     self.autorepliers.append(js)
 
     def reload(self):
+        self.load_config()
         self.load_sme_index()
         self.known_cmds = {}
         self.import_commands()
@@ -107,7 +108,7 @@ class Util:
     async def shutdown(self):
         await self.client.close()
 
-    def run(self):
+    def load_config(self):
         with open("config/config.json") as f:
             config = json.load(f)
             self.BOT_TOKEN = config["bot_token"]
@@ -118,6 +119,9 @@ class Util:
             self.SAVED_FOLDER = config["folders"]["saved"]
             self.LIBRARY_FOLDER = config["folders"]["library"]
             self.AUTOREPLY_FOLDER = config["folders"]["autoreply"]
+
+    def run(self):
+        self.load_config()
         self.client.run(self.BOT_TOKEN)
 
     async def download_png(self, idd, url):
