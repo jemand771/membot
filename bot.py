@@ -81,8 +81,11 @@ async def on_message(message):
             continue
 
         # match found, send response and get outta here
-        await message.channel.send(
-            "".join(["> " + x + "\n" for x in message.content.split("\n")]) + replier["response"])
+        quote = "".join(["> " + x + "\n" for x in message.content.split("\n")])
+        # disable quoting for bot-like commands
+        if "quote" in replier.keys() and not replier["quote"]:
+            quote = ""
+        await message.channel.send(quote + replier["response"])
         return
 
     # print(message.content)
